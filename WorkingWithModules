@@ -1,0 +1,11 @@
+app.js
+const tut = require('./tutorial')
+console.log(tut);
+
+console.log(tut.sum(23,45));
+console.log(tut.pi);
+Tutorial.js
+const sum = (num1,num2) => num1 + num2;
+const pi = 3.14;
+module.exports.sum = sum;
+module.exports.pi =pi;
