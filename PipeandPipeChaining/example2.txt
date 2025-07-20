@@ -1,0 +1,77 @@
+### 🔧 `pipe()` Method in Node.js
+
+The `.pipe()` method is used in **Node.js streams** to **connect the output of one stream to the input of another**, allowing data to flow automatically between them.
+
+---
+
+## ✅ Basic Use Case: Copying a File
+
+```js
+const fs = require('fs');
+
+// Create readable and writable streams
+const readStream = fs.createReadStream('input.txt');
+const writeStream = fs.createWriteStream('output.txt');
+
+// Pipe the read stream into the write stream
+readStream.pipe(writeStream);
+```
+
+### 🔍 What Happens:
+
+* `readStream` reads data from `input.txt`
+* `pipe()` sends it chunk by chunk to `writeStream`
+* `writeStream` writes it to `output.txt`
+
+✅ This is **efficient** and **memory-friendly**, especially for large files.
+
+---
+
+## 📦 Why Use `pipe()`?
+
+* Streams use **chunks** instead of loading the whole file into memory.
+* Prevents memory overload.
+* Supports **chaining** with multiple pipes (e.g., read → compress → write).
+
+---
+
+## ✅ Example: Read, Compress, and Write Using Pipe
+
+```js
+const fs = require('fs');
+const zlib = require('zlib');
+
+const readStream = fs.createReadStream('input.txt');
+const writeStream = fs.createWriteStream('input.txt.gz');
+
+readStream
+  .pipe(zlib.createGzip()) // compress the data
+  .pipe(writeStream);      // write compressed data to file
+```
+
+---
+
+## 📚 `.pipe()` Syntax
+
+```js
+readableStream.pipe(writableStream);
+```
+
+* `readableStream`: source of data
+* `writableStream`: destination for data
+
+---
+
+## ⚠️ Important Notes
+
+* `.pipe()` is only available on **readable streams**.
+* If there's an error, always handle it with `.on('error')`:
+
+  ```js
+  readStream.on('error', err => console.error('Read Error:', err));
+  writeStream.on('error', err => console.error('Write Error:', err));
+  ```
+
+---
+
+Want an example with user input or server response piping (like piping an HTTP request)?
