@@ -1,0 +1,58 @@
+Your code is **almost correct**, but there are two key things to address:
+
+---
+
+### ❌ Issue 1: Typo in variable name
+
+You wrote:
+
+```js
+s.rmdir('example', err => {
+```
+
+But it should be:
+
+```js
+fs.rmdir('example', err => {
+```
+
+✅ Make sure `fs` is required at the top:
+
+```js
+const fs = require('fs');
+```
+
+---
+
+### ❌ Issue 2: `fs.rmdir` is **deprecated** in recent Node.js versions (v14+).
+
+It’s better to use `fs.rm` with `{ recursive: true }` when removing folders.
+
+---
+
+### ✅ Recommended Code (modern way):
+
+```js
+const fs = require('fs');
+
+fs.rm('example', { recursive: true, force: true }, (err) => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log('Deleted the folder successfully');
+  }
+});
+```
+
+### 🔍 Explanation:
+
+* `recursive: true`: deletes the folder **and everything inside it**.
+* `force: true`: does not throw error if folder doesn't exist.
+
+---
+
+### 🧠 Tip:
+
+If you're using older Node.js and want to use `fs.rmdir`, make sure the folder is **empty**, or it will throw an error.
+
+Let me know your Node.js version (`node -v`) if you want a version-specific solution.
